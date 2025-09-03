@@ -1,0 +1,5 @@
+type Result = variant { Ok : text; Err : text };
+service : {
+  generate_keypair_solana : () -> (Result);
+  sign_transaction_solana : (text) -> (Result);
+}

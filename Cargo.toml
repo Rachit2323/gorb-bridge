@@ -1,5 +1,5 @@
 [workspace]
 members = [
-    "src/gorbagana-bridge-backend"
+    "src/gorbagana_bridge_backend"
 ]
 resolver = "2"

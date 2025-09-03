@@ -1,10 +1,10 @@
 {
-  "name": "gorbagana-bridge-frontend",
+  "name": "gorbagana_bridge_frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "setup": "npm i && dfx canister create gorbagana-bridge-backend && dfx generate gorbagana-bridge-backend && dfx deploy",
+    "setup": "npm i && dfx canister create gorbagana_bridge_backend && dfx generate gorbagana_bridge_backend && dfx deploy",
     "start": "vite --port 3000",
     "prebuild": "dfx generate",
     "build": "tsc && vite build",

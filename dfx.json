@@ -1,19 +1,19 @@
 {
   "canisters": {
-    "gorbagana-bridge-backend": {
-      "candid": "src/gorbagana-bridge-backend/gorbagana-bridge-backend.did",
-      "package": "gorbagana-bridge-backend",
+    "gorbagana_bridge_backend": {
+      "candid": "src/gorbagana_bridge_backend/gorbagana_bridge_backend.did",
+      "package": "gorbagana_bridge_backend",
       "type": "rust"
     },
-    "gorbagana-bridge-frontend": {
+    "gorbagana_bridge_frontend": {
       "dependencies": [
-        "gorbagana-bridge-backend"
+        "gorbagana_bridge_backend"
       ],
       "source": [
-        "src/gorbagana-bridge-frontend/dist"
+        "src/gorbagana_bridge_frontend/dist"
       ],
       "type": "assets",
-      "workspace": "gorbagana-bridge-frontend"
+      "workspace": "gorbagana_bridge_frontend"
     }
   },
   "defaults": {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { gorbagana_bridge_backend } from 'declarations/gorbagana-bridge-backend';
+import { gorbagana_bridge_backend } from 'declarations/gorbagana_bridge_backend';
 
 function App() {
   const [greeting, setGreeting] = useState('');
