@@ -1,0 +1,27 @@
+{
+  "canisters": {
+    "gorbagana-bridge-backend": {
+      "candid": "src/gorbagana-bridge-backend/gorbagana-bridge-backend.did",
+      "package": "gorbagana-bridge-backend",
+      "type": "rust"
+    },
+    "gorbagana-bridge-frontend": {
+      "dependencies": [
+        "gorbagana-bridge-backend"
+      ],
+      "source": [
+        "src/gorbagana-bridge-frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "gorbagana-bridge-frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

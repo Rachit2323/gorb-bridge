@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "src/gorbagana-bridge-backend"
+]
+resolver = "2"
