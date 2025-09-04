@@ -1,6 +1,43 @@
+type IndexerState = record {
+  last_check_time : nat64;
+  program_id : text;
+  events : vec TransferEvent;
+  last_processed_signature : opt text;
+};
 type Result = variant { Ok : text; Err : text };
+type Result_1 = variant { Ok : opt text; Err : text };
+type Result_2 = variant { Ok : vec SignatureInfo; Err : text };
+type Result_3 = variant { Ok : vec TransferEvent; Err : text };
+type Result_4 = variant { Ok; Err : text };
+type SignatureInfo = record {
+  err : opt text;
+  signature : text;
+  confirmationStatus : opt text;
+  memo : opt text;
+  slot : nat64;
+  blockTime : opt int64;
+};
+type TransferEvent = record {
+  signature : text;
+  recipient : text;
+  sender : text;
+  message : text;
+  timestamp : nat64;
+  amount : text;
+};
 service : {
   generate_keypair_solana : () -> (Result);
   generate_keypair_solana_user : () -> (Result);
+  get_all_events : () -> (vec TransferEvent) query;
+  get_indexer_state : () -> (IndexerState) query;
+  get_latest_events : (nat32) -> (vec TransferEvent) query;
+  get_program_data : (text) -> (Result_1);
+  get_signatures_for_address : (text) -> (Result_2);
+  index_transactions : () -> (Result_3);
+  process_tokens_locked_event : (text) -> (Result_4);
+  reset_indexer : () -> ();
+  set_program_id : (text) -> ();
   sign_transaction_solana : (text) -> (Result);
+  start_monitoring : () -> ();
+  stop_monitoring : () -> (text);
 }

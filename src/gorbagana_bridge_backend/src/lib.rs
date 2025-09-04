@@ -3,6 +3,11 @@ use candid::{CandidType, Principal};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
+use crate::indexer::TransferEvent;
+use crate::indexer::IndexerState;
+use crate::indexer::SignatureInfo;
+mod indexer;
+
 #[derive(CandidType, Serialize, Deserialize, Debug, Copy, Clone)]
 pub enum SchnorrAlgorithm {
     #[serde(rename = "ed25519")]
@@ -41,6 +46,64 @@ struct ManagementCanisterSignatureRequest {
 struct ManagementCanisterSignatureReply {
     pub signature: Vec<u8>,
 }
+
+#[derive(CandidType, Serialize, Deserialize, Debug)]
+struct TransactionParams {
+    pub base64_message: String,
+    pub sender_public_key: String,
+    pub blockhash: String,
+    pub last_valid_block_height: u64,
+}
+
+#[derive(CandidType, Serialize, Deserialize, Debug)]
+struct TransactionResult {
+    pub success: bool,
+    pub transaction_id: Option<String>,
+    pub error: Option<String>,
+}
+
+async fn complete_transaction_rust(signature_hex: String) -> TransactionResult {
+    ic_cdk::println!("Starting transaction completion with signature: {}...", &signature_hex[0..20.min(signature_hex.len())]);
+    
+    // Convert signature from hex to bytes
+    let signature_bytes = match hex::decode(&signature_hex) {
+        Ok(bytes) => bytes,
+        Err(e) => {
+            let error_msg = format!("Failed to decode signature hex: {}", e);
+            ic_cdk::println!("ERROR: {}", error_msg);
+            return TransactionResult {
+                success: false,
+                transaction_id: None,
+                error: Some(error_msg),
+            };
+        }
+    };
+    
+    ic_cdk::println!("Signature ({} bytes): {}...", signature_bytes.len(), &signature_hex[0..20.min(signature_hex.len())]);
+    
+    // Note: In a real implementation, you would need to:
+    // 1. Get the base64_message, blockhash, and last_valid_block_height from somewhere
+    // 2. Check if blockhash is still valid
+    // 3. Create the wire transaction format
+    // 4. Send the transaction to Solana network
+    // 5. Monitor transaction status
+    
+    // For now, this is a placeholder that simulates the transaction process
+    ic_cdk::println!("Transaction completion simulation - signature processed successfully");
+    
+    // Simulate transaction ID (in real implementation, this would come from Solana network)
+    let simulated_tx_id = format!("{}...{}", &signature_hex[0..8], &signature_hex[signature_hex.len()-8..]);
+    
+    ic_cdk::println!("Simulated transaction ID: {}", simulated_tx_id);
+    ic_cdk::println!("View on Solana Explorer: https://explorer.solana.com/tx/{}?cluster=devnet", simulated_tx_id);
+    
+    TransactionResult {
+        success: true,
+        transaction_id: Some(simulated_tx_id),
+        error: None,
+    }
+}
+
 
 #[ic_cdk::update]
 async fn generate_keypair_solana_user() -> Result<String, String> {
@@ -181,7 +244,11 @@ async fn sign_transaction_solana(hash: String) -> Result<String, String> {
     // let transformed_signature = transform_signature_for_solana(&internal_reply.signature)
     // .map_err(|e| format!("Failed to transform signature: {}", e))?;
 
-    ic_cdk::println!("intera {:?}",internal_reply);
+    ic_cdk::println!("internal_reply {:?}",internal_reply);
+    
+    // Convert the completeTransaction functionality to Rust
+    complete_transaction_rust(hex::encode(&internal_reply.signature)).await;
+    
     Ok(hex::encode(&internal_reply.signature))
 }
 
